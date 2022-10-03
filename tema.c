@@ -6,6 +6,8 @@
 #include <sys/wait.h>
 #include <sys/types.h>
 
+void prelucrareRezultatePipe();
+
 int main(int argc, char* argv[])
 {
     if(argc < 2) { //error check
@@ -52,16 +54,8 @@ int main(int argc, char* argv[])
         #include "errors/e5.h"
         int dup2_error = dup2(fd_pipe[0],0);
         #include "errors/e9.h"
-
-        char s[256];
-        while(fgets(s,256,stdin)) {
-            s[strlen(s) - 1] = 0;
-            int i;
-            char iesire[7][256];
-            for(i = 0;i < 7;++i)
-                scanf("%s",iesire[i]);
-            printf("%s %s %s\n",iesire[6],iesire[4],iesire[2]);
-        }
+        
+        prelucrareRezultatePipe();
 
         int wait_err = wait(NULL);
         #include "errors/e12.h"
@@ -75,4 +69,16 @@ int main(int argc, char* argv[])
         exit(4);
     }
     return 0;
+}
+
+void prelucrareRezultatePipe() {
+    char s[256];
+    while(fgets(s,256,stdin)) {
+        s[strlen(s) - 1] = 0;
+        int i;
+        char iesire[7][256];
+        for(i = 0;i < 7;++i)
+            scanf("%s",iesire[i]);
+        printf("%s %s %s\n",iesire[6],iesire[4],iesire[2]);
+    }
 }
