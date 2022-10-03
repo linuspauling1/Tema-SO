@@ -19,7 +19,7 @@ int main(int argc, char* argv[])
         exit(2);
     }
     if(!S_ISDIR(tampon.st_mode)) { //error check
-        frpintf(stderr,"Argumentul nu este director.\n");
+        fprintf(stderr,"Argumentul nu este director.\n");
         exit(3);
     }
     int fd_pipe[2];
