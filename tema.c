@@ -25,60 +25,33 @@ int main(int argc, char* argv[])
     int fd_pipe[2];
     int err_pipe = pipe(fd_pipe);
     int in = dup(0);
-    if(in < 0) { //error check
-        perror(NULL);
-        exit(-1);
-    }
+    #include "errors/e1.h"
     int out = dup(1);
-    if(out < 0) { //error check
-        perror(NULL);
-        exit(-2);
-    }
+    #include "errors/e2.h"
     int pid = fork();
     if(pid == 0) { //error check
         int close_err = close(fd_pipe[0]);
-        if(close_err < 0) {
-            perror(NULL);
-            exit(-3);
-        }
+        #include "errors/e3.h"
         char* argumente[4];
         argumente[0] = "ls";
         argumente[1] = "-al";
         argumente[2] = argv[1];
         argumente[3] = NULL;
         int dup2_error = dup2(fd_pipe[1],1);
-        if(dup2_error < 0) { //error check
-            perror(NULL);
-            exit(-7);
-        }
+        #include "errors/e7.h"
         int execvp_err = execvp(argumente[0],argumente);
-        if(execvp_err < 0) { //error check
-            perror(NULL);
-            exit(-11);
-        }
+        #include "errors/e11.h"
         close_err = close(fd_pipe[1]);
-        if(close_err < 0) { //error check
-            perror(NULL);
-            exit(-4);
-        }
+        #include "errors/e4.h"
         dup2_error = dup2(out,1);
-        if(dup2_error < 0) { //error check
-            perror(NULL);
-            exit(-8);
-        }
+        #include "errors/e8.h"
         return 0;
     }
     else if(pid > 0) {
         int close_err = close(fd_pipe[1]);
-        if(close_err < 0) { //error check
-            perror(NULL);
-            exit(-5);
-        }
+        #include "errors/e5.h"
         int dup2_error = dup2(fd_pipe[0],0);
-        if(dup2_error < 0) { //error check
-            perror(NULL);
-            exit(-9);
-        }
+        #include "errors/e9.h"
 
         char s[256];
         while(fgets(s,256,stdin)) {
@@ -91,24 +64,15 @@ int main(int argc, char* argv[])
         }
 
         int wait_err = wait(NULL);
-        if(wait_err < 0) { //error check
-            perror(NULL);
-            exit(-12);
-        }
+        #include "errors/e12.h"
         close_err = close(fd_pipe[0]);
-        if(close_err < 0) { //error check
-            perror(NULL);
-            exit(-6);
-        }
+        #include "errors/e6.h"
         dup2_error = dup2(in,0);
-        if(dup2_error < 0) { //error check
-            perror(NULL);
-            exit(-10);
-        }
+        #include "errors/e10.h"
     }
     else if(pid < 0) { //error check
         perror("Armarea procesului a esuat.");
-        exit(-3);
+        exit(4);
     }
     return 0;
 }
