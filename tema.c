@@ -20,7 +20,7 @@ int main(int argc, char* argv[]) {
         exit(2);
     }
     if(stat(argv[1],&tampon) == -1) {
-        perror("Eroare la analiza fisierului: ");
+        perror("Eroare la analiza fisierului");
         exit(3);
     }
     if(!S_ISDIR(tampon.st_mode)) {
@@ -29,17 +29,17 @@ int main(int argc, char* argv[]) {
     }
     int fd[2];
     if(pipe(fd) == -1) {
-        perror("Eroare la crearea pipe-ului: ");
+        perror("Eroare la crearea pipe-ului");
         exit(5);
     }
     int pid = fork();
     if(pid == -1) {
-        perror("Eroare la crearea procesului fiu: ");
+        perror("Eroare la crearea procesului fiu");
         exit(6);
     }
     if(pid == 0) {
         if(close(fd[0]) == -1) {
-            perror("Eroare la close: ");
+            perror("Eroare la close");
             exit(7);
         }
         char * arguments[4];
@@ -54,37 +54,37 @@ int main(int argc, char* argv[]) {
         if(execvp(arguments[0],arguments) == -1) {
             perror("Nu a functionat executia...");
             if(close(fd[1]) == -1){
-                perror("Eroare la close: ");
+                perror("Eroare la close");
                 exit(-1);
             }
             exit(9);
         }
     } else {
         if(close(fd[1]) == -1) {
-            perror("Eroare la close: ");
+            perror("Eroare la close");
             exit(10);
         }
         int tmp = dup(STDIN_FILENO);//pregatire restaurare STDIN
         if(tmp == -1) {
-            perror("Eroare la dup: ");
+            perror("Eroare la dup");
             exit(11);
         }
         if(dup2(fd[0],STDIN_FILENO) == -1) {
-            perror("Eroare la dup2: ");
+            perror("Eroare la dup2");
             exit(12);
         }
         prelucrareRezultatePipe();
         if(close(fd[0]) == -1) {
-            perror("Eroare la close: ");
+            perror("Eroare la close");
             exit(13);
         }
         if(dup2(tmp, STDERR_FILENO) == -1) {//restaurarea descriptorului STDIN
-            perror("Eroare la dup2: ");
+            perror("Eroare la dup2");
             exit(14);
         }
         int wstatus;
         if(wait(&wstatus) == -1) {
-            perror("Eroare la wait: ");
+            perror("Eroare la wait");
             exit(15);
         }
         if(WIFEXITED(wstatus)) {
