@@ -17,8 +17,8 @@ int main(int argc, char** argv) {
         perror("Eroare la deschiderea fisierului de intrare");
         exit(2);
     }
-    int no = 0;
-    int sum = 0;
+    unsigned int no = 0;
+    unsigned int sum = 0;
     unsigned char buf1[2];
     unsigned char buf2[4];
     unsigned char count[] = {0,0,0};
