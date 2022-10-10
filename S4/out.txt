@@ -1,5 +1,0 @@
-numar litere mici: 126    
-umar litere mari: 19    
-numar cifre: 10    
-numar aparitii caracater: 1    
-dimensiune fisier: 188

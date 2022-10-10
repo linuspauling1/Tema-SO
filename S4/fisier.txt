@@ -1,3 +1,0 @@
-Pentru a obtine dimensiunea fisierului se vor folosi apeluri sistem din familia stat.
-Problema data la laborator SO de Valentin STANGACIU
-Last modified: Saturday, 22 October 2016, 10:56 AM

@@ -1,3 +1,5 @@
-./*
-!./S*/p*.c
-!./test/tema.c
+*
+!.gitignore
+!readme.md
+!*.c
+!*/
