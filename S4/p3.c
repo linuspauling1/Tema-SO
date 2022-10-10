@@ -47,7 +47,7 @@ int main(int argc, char ** argv){
         perror("Nu s-a putut inchide fisierul de intrare");
         exit(5);
     }
-    if((fd = open(argv[2],O_WRONLY | O_CREAT)) == -1){
+    if((fd = open(argv[2],O_WRONLY | O_CREAT,0777)) == -1){
         perror("Nu s-a putut deschide fisierul de iesire");
         exit(6);
     }
