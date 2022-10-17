@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 #include <fcntl.h>
 #include <ctype.h>
 #include <sys/types.h>
@@ -55,7 +56,7 @@ int main(){
         }
         int fd;
         int size = 0;
-        int distinct;
+        char distinct[BSIZE];
         char buf[BSIZE];
         if((fd = open(input_file,O_RDONLY)) == -1){
             perror("Nu am putut deschide fisierul de intrare");
@@ -71,16 +72,16 @@ int main(){
                 exit(1);
             }
         }
-        /*if(dup2(fd3[0],0) == -1){
-            perror("Eroare la duplicarea descriptorului");
-            exit(1);
-        }
-        scanf("%d",distinct);*/
-        printf("Numarul de caractere distincte este: ",distinct);
         if(close(fd1[1]) == -1){
             perror("Eroare la inchiderea capatului de scriere in prima conducta");
             exit(1);
         }
+        char tmp[BSIZE];
+        if(read(fd3[0],tmp,BSIZE) == -1){
+            perror("Nu am putut citi din teava");
+            exit(1);
+        }
+        printf("%s",tmp);
         if(close(fd3[0]) == -1){
             perror("Eroare la inchiderea capatului de cirire din a treia conducta");
             exit(1);
@@ -89,8 +90,14 @@ int main(){
             perror("Nu am putut inchide fisierul de intrare");
             exit(1);
         }
-        wait(NULL);//TODO: verificari
-        wait(NULL);//TODO: verificari
+        if(wait(NULL) == -1){
+            perror("Eroare la interceptarea unui copil");
+            exit(1);
+        }
+        if(wait(NULL) == -1){
+            perror("Eroare la interceptarea altui copil");
+            exit(1);
+        }
     }
     if(id1 == 0){
         if(close(fd1[1]) == -1){
@@ -171,6 +178,11 @@ int main(){
             perror("Eroare la crearea fisierului");
             exit(1);
         }
+        int fd_tmp;
+        if((fd_tmp = dup(1)) == -1){
+            perror("Duplicare eronata");
+            exit(1);
+        }
         if(dup2(fd,1) == -1){
             perror("Eroare la redirectionare");
             exit(1);
@@ -180,11 +192,12 @@ int main(){
                 ++distinct;
                 printf("%c: %d\n",i+'a',freq[i]);
             }
-        /*if(dup2(fd3[1],1) == -1){
-            perror("Eroare la redirectionare");
+        char tmp[BSIZE];
+        sprintf(tmp,"%d\n",distinct);//trebuie trimis catre procesul parinte!!!
+        if(write(fd_tmp,tmp,strlen(tmp)) == -1){
+            perror("Nu am putut trimite date prin teava");
             exit(1);
-        }*/
-        printf("%d\n",distinct);
+        }
         if(close(fd3[1]) == -1){
             perror("Eroare la inchiderea capatului de scriere in a treia conducta");
             exit(1);
