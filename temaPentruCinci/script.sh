@@ -49,4 +49,4 @@ do
         echo "$relative_name: $count_valid" >> $statistics
     fi
 done
-echo "Au fost prelucrate $count_files fisiere, avand intotal $count_lines linii (valide)." >> $statistics
+echo "Au fost prelucrate $count_files fisiere, avand in total $count_lines linii." >> $statistics
