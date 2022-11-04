@@ -7,13 +7,13 @@ then
 fi
 
 flag=0
-if ! [[ -d $1 ]]
+if ! [ -d $1 ]
 then
     echo "Primul argument nu este director."
     flag=1
 fi
 
-if ! [[ -d $2 ]]
+if ! [ -d $2 ]
 then
     echo "Al doilea argument nu este director."
     flag=1
@@ -26,7 +26,7 @@ fi
 
 statistics="$2/statistica.txt"
 touch statistics
-sed -i d $statistics
+echo -n "" > $statistics
 
 count_files=0
 count_lines=0
@@ -35,14 +35,14 @@ for entry in $1/*
 do
     if [ -f $entry ] && [ ${entry: -4} == ".txt" ]
     then
-        count_files=$((++count_files))
+        ((++count_files))
         count_valid=0
         while read line
         do
-            count_lines=$((count_lines+1))
+            ((++count_lines))
             if [[ $line =~ $regex ]]
             then
-                count_valid=$((count_valid+1))
+                ((++count_valid))
             fi
         done < $entry
         relative_name=${entry:$((${#1}+1)):${#entry}}
